@@ -1,5 +1,15 @@
+from ScreenCodes import ScreenCodes
+
 
 class GameState:
+
+    SCREEN_CODE = ScreenCodes.BA
+    RUNNING = True
+
+    PLAYER = None
+    PLAYER_SPEED = 2
+
+    ENEMY = None
 
     @classmethod
     def init(cls):
