@@ -1,0 +1,97 @@
+1x1 grid with menu on top
+player						-> ship sent to destroy AI
+enemy						-> evil AI
+currencies		-> keys? some other valuable?		-> batteries
+projectiles		-> electroball(?) emp pulse(?)		-> pulse
+
+
+enemy is bouncing around in the grid, shooting a projectile to your position every few seconds. it also bounces against player
+
+player has to avoid enemy's bullets, and collect the currencies.
+value of the currencies rises with the fibonacci sequence. players can also shoot a bullet to the enemy with space, but this costs a currency. when collision with enemy, it stuns the enemy for 3 seconds, during which it cannot attack you and it won't move
+
+when you get hit with enough bullets from enemy (lives=3?) you get sent to the shop, where you can spend your coins for better hp, faster movement, more bullets per shot, longer stun effect that sort of thing.
+
+Your ultimate goal is to stay alive as long as you can.
+
+in the main screen, you can choose a safe-file. In other words: i want all personal data to be 1-file-only. Probs JSON.
+
+Maybe idea for future: multiple types of levels, with different enemies.
+
+
+
+1 important thing, i want at least 1 animation
+
+
+-enemy is an evil AI, you got to shoot it down with an EMP-bases pulse (PEP) (Pulsed energy projectile)
+-Alpha pulse
+____
+
+technical shit:
+
+there will be a generic game-state class with static content that needs to be updated and reset for the current log-on. the contents of the save-file are also loaded in this one.
+
+-screen system
+	different screen-codes (MA (main-screen), SH (shop), BA (battle), etc)
+	in game-state the current code is set. in the mainloop, i'll just use if statements that call handles of the screen class
+
+-select save-file
+	there is a dir with all save-files. just a json with all contents that need to be saved in advance. when you play with an existing, a dialog will open where you can pick 		it out. that content is used. if you create a new one, there will just be a new json file. filename is based on guid + username.
+
+-display shit
+	generic display class, that looks at the game-state and draws everything that needs to be drawn
+
+
+OOP classes:
+	-button		(will need multiple buttons, with clicking logic. best to just define 1)
+	-player		(contains player info during a battle)
+	-enemy		(contains enemy info during a battle)
+	-game-state	(generic, contains info about the save-file, like how many points, what upgrades etc.)
+	-display		(generic, can display everything)
+	-inputhandles	(generic, has handles for the input, which then call the appropriate methods etc. is called from the mainloop)
+
+
+___________
+
+directory-design:
+
+-root
+	-docs
+		-wireframes
+	-src
+		-lib
+			-sprites
+			-sounds
+			-images
+		-saves
+
+
+
+_________
+
+Json format:
+
+{
+    "player_name": "Dustin",
+    "created_at": "10-10-2022",
+    "batteries": 46,
+    "upgrades": [
+        {
+            "upgrade": "extra_life",
+            "amount_bought": 3
+        },
+        {
+            "upgrade": "faster_pulse",
+            "amount_bought": 7
+        },
+        {
+            "upgrade": "speed",
+            "amount_bought": 2
+        },
+        {
+            "upgrade": "extra_pulse",
+            "amount_bought": 4
+        }
+    ],
+    "highscore": 1727465
+}
