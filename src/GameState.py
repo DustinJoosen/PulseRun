@@ -1,4 +1,4 @@
-from ScreenCodes import ScreenCodes
+from Enums import ScreenCodes
 
 
 class GameState:
@@ -10,6 +10,8 @@ class GameState:
     PLAYER_SPEED = 2
 
     ENEMY = None
+
+    BATTERY = None
 
     @classmethod
     def init(cls):
