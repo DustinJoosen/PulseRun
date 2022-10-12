@@ -31,10 +31,12 @@ class Display:
         pygame.display.update()
 
     def __draw_main_screen(self):
-        pass
+        text = self.font.render("Main screen", True, (255, 255, 255))
+        self.screen.blit(text, (0, 0))
 
     def __draw_shop_screen(self):
-        pass
+        text = self.font.render("Shop screen", True, (255, 255, 255))
+        self.screen.blit(text, (0, 0))
 
     def __draw_battle_screen(self):
         # Temp
@@ -58,3 +60,6 @@ class Display:
 
         battery_text = self.font.render(f"{GameState.BATTERY.value}", True, (255, 255, 255))
         self.screen.blit(battery_text, (GameState.BATTERY.position_x + 10, GameState.BATTERY.position_y + 15))
+
+        lives_text = self.font.render(f"{GameState.PLAYER.LIVES}", True, (255, 255, 255))
+        self.screen.blit(lives_text, (GameState.PLAYER.position_x + 10, GameState.PLAYER.position_y + 15))

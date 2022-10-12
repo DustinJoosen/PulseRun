@@ -1,5 +1,5 @@
 from GameState import GameState
-from Enums import ProjectileOrigin
+from Enums import ProjectileOrigin, ScreenCodes
 
 
 class BaseShootable:
@@ -33,7 +33,10 @@ class BaseShootable:
 
                 if projectile.source == ProjectileOrigin.Enemy:
                     GameState.PLAYER.LIVES -= 1
-                    print(f"Player lost a life! Only {GameState.PLAYER.LIVES} lives left!")
 
                     if GameState.PLAYER.LIVES <= 0:
-                        GameState.RUNNING = False
+                        GameState.SCREEN_CODE = ScreenCodes.SH
+
+                elif projectile.source == ProjectileOrigin.Player:
+                    print("Hit the enemy!")
+                    GameState.ENEMY.damage_ticks = 0
