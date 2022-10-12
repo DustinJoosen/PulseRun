@@ -7,8 +7,8 @@ from Enums import ProjectileOrigin
 
 
 class Enemy(BaseShootable):
-    SPEED = 10
-    PROJECTILE_INTERVAL = 2
+    SPEED = 80
+    PROJECTILE_INTERVAL = 1
     ORIGIN_TYPE = ProjectileOrigin.Enemy
 
     def __init__(self):

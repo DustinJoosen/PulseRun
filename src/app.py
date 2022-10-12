@@ -13,6 +13,8 @@ GameState.init()
 screen = pygame.display.set_mode((Display.WIDTH, Display.HEIGHT))
 caption = pygame.display.set_caption("Pulse Run")
 
+clock = pygame.time.Clock()
+
 display = Display(screen)
 
 player = Player()
@@ -21,6 +23,8 @@ enemy = Enemy()
 battery = Battery()
 
 while GameState.RUNNING:
+    clock.tick(64)
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_q):
             GameState.RUNNING = False

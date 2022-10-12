@@ -15,6 +15,9 @@ class Display:
         self.screen = screen
 
         self.font = pygame.font.Font("freesansbold.ttf", 15)
+        self.images = {
+            "background_bs": pygame.image.load("lib/images/background_bs.png")
+        }
 
     def update(self):
         self.screen.fill((0, 0, 0))
@@ -39,9 +42,11 @@ class Display:
         self.screen.blit(text, (0, 0))
 
     def __draw_battle_screen(self):
+        self.screen.blit(self.images["background_bs"], (0, self.BATTLEBOX_VERTICAL_BORDER))
+
         # Temp
         pygame.draw.rect(self.screen, (0, 255, 255), [0, 0, self.WIDTH, self.BATTLEBOX_VERTICAL_BORDER])
-        pygame.draw.rect(self.screen, (255, 255, 0), [0, self.BATTLEBOX_VERTICAL_BORDER, self.WIDTH, self.HEIGHT - self.BATTLEBOX_VERTICAL_BORDER])
+        # pygame.draw.rect(self.screen, (255, 255, 0), [0, self.BATTLEBOX_VERTICAL_BORDER, self.WIDTH, self.HEIGHT - self.BATTLEBOX_VERTICAL_BORDER])
 
         pygame.draw.rect(self.screen, (0, 255, 0),
                          [GameState.PLAYER.position_x, GameState.PLAYER.position_y, GameState.PLAYER.SIZE , GameState.PLAYER.SIZE])

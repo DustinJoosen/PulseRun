@@ -7,7 +7,7 @@ class GameState:
     RUNNING = True
 
     PLAYER = None
-    PLAYER_SPEED = 2
+    PLAYER_SPEED = 15
 
     ENEMY = None
 

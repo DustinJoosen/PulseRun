@@ -5,7 +5,7 @@ from GameState import GameState
 
 class Projectile:
     SIZE = 10
-    SPEED = 25
+    SPEED = 80
 
     def __init__(self, source, pos_x=0, pos_y=0):
         self.position_x = pos_x
