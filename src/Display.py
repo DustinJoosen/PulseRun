@@ -56,11 +56,17 @@ class Display:
 
         pygame.draw.rect(self.screen, (40, 40, 40), [0, 0, self.WIDTH, self.BATTLEBOX_VERTICAL_BORDER])
 
-        pygame.draw.rect(self.screen, (0, 255, 0),
-                         [GameState.PLAYER.position_x, GameState.PLAYER.position_y, GameState.PLAYER.SIZE , GameState.PLAYER.SIZE])
+        points_text = self.font.render(f"{int(GameState.PLAYER.batteries)} batteries", True, (255, 255, 255))
+        self.screen.blit(points_text, (300, 25))
 
         pygame.draw.rect(self.screen, GameState.ENEMY.color,
                          [GameState.ENEMY.position_x, GameState.ENEMY.position_y, GameState.ENEMY.SIZE, GameState.ENEMY.SIZE])
+
+        pygame.draw.rect(self.screen, (0, 255, 0),
+                         [GameState.PLAYER.position_x, GameState.PLAYER.position_y, GameState.PLAYER.SIZE , GameState.PLAYER.SIZE])
+
+        lives_text = self.font.render(f"{GameState.PLAYER.LIVES}", True, (255, 255, 255))
+        self.screen.blit(lives_text, (GameState.PLAYER.position_x + 10, GameState.PLAYER.position_y + 15))
 
         sprite = self.sprites["spike"]
         for projectile in GameState.ENEMY.projectiles:
@@ -69,6 +75,3 @@ class Display:
         sprite = self.sprites["pulse"]
         for projectile in GameState.PLAYER.projectiles:
             self.screen.blit(sprite, (projectile.position_x, projectile.position_y))
-
-        lives_text = self.font.render(f"{GameState.PLAYER.LIVES}", True, (255, 255, 255))
-        self.screen.blit(lives_text, (GameState.PLAYER.position_x + 10, GameState.PLAYER.position_y + 15))

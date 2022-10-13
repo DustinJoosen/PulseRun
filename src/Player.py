@@ -12,6 +12,8 @@ class Player(BaseShootable):
     def __init__(self):
         super().__init__(0, Display.BATTLEBOX_VERTICAL_BORDER)
 
+        self.batteries = 1
+
         GameState.PLAYER = self
 
     def update_position(self, direction):

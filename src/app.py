@@ -33,8 +33,9 @@ while GameState.RUNNING:
             continue
 
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
+            if event.key == pygame.K_SPACE and GameState.PLAYER.batteries >= 4:
                 GameState.PLAYER.shoot_projectiles()
+                GameState.PLAYER.batteries -= 4
 
     if GameState.SCREEN_CODE == ScreenCodes.BA:
         frame_num += 1
@@ -53,6 +54,7 @@ while GameState.RUNNING:
             GameState.PLAYER.update_position("down")
 
         if GameState.PLAYER.battery_collision():
+            GameState.PLAYER.batteries += GameState.BATTERY.value
             GameState.BATTERY.regenerate()
 
         GameState.ENEMY.update_position()
