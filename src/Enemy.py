@@ -17,7 +17,7 @@ class Enemy(BaseShootable):
         self.direction_x = 0
         self.direction_y = 0
 
-        self.color = (200, 200, 255)
+        self.color = (50, 50, 255)
 
         GameState.ENEMY = self
 
@@ -48,7 +48,7 @@ class Enemy(BaseShootable):
             self.color = (255, 0, 0)
             self.damage_ticks += 1
         else:
-            self.color = (200, 200, 255)
+            self.color = (50, 50, 50)
 
     def shoot_projectile(self):
         mid_x, mid_y = self.get_mid_pos()
@@ -57,11 +57,10 @@ class Enemy(BaseShootable):
         player_pos = [GameState.PLAYER.position_x, GameState.PLAYER.position_y]
         enemy_pos = [self.position_x, self.position_y]
 
-        # Todo: make the bullets move towards the player
-        dir_x = 1
-        dir_y = 0
+        distance_x = player_pos[0] - enemy_pos[0]
+        distance_y = player_pos[1] - enemy_pos[1]
 
-        projectile.direction_x = dir_x
-        projectile.direction_y = dir_y
+        projectile.direction_x = distance_x / 100
+        projectile.direction_y = distance_y / 100
 
         self.projectiles.append(projectile)

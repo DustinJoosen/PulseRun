@@ -22,6 +22,8 @@ enemy = Enemy()
 
 battery = Battery()
 
+frame_num = 0
+
 while GameState.RUNNING:
     clock.tick(64)
 
@@ -33,10 +35,12 @@ while GameState.RUNNING:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 GameState.PLAYER.shoot_projectiles()
-            if event.key == pygame.K_RETURN:
-                battery.regenerate()
 
     if GameState.SCREEN_CODE == ScreenCodes.BA:
+        frame_num += 1
+        if frame_num > 22:
+            frame_num = 0
+
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
@@ -54,6 +58,7 @@ while GameState.RUNNING:
         GameState.ENEMY.update_position()
         GameState.PLAYER.update_projectiles()
 
-    display.update()
+    display.update(frame_num)
 
 GameState.ENEMY.thread.cancel()
+print(GameState.BATTERY.value)

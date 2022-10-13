@@ -13,14 +13,23 @@ class Display:
 
     def __init__(self, screen):
         self.screen = screen
-
         self.font = pygame.font.Font("freesansbold.ttf", 15)
+
+        self.frame_num = 0
+
         self.images = {
             "background_bs": pygame.image.load("lib/images/background_bs.png")
         }
 
-    def update(self):
-        self.screen.fill((0, 0, 0))
+        self.sprites = {
+            "battery": pygame.image.load("lib/sprites/battery.png"),
+            "pulse": pygame.image.load("lib/sprites/pulse.png"),
+            "spike": pygame.image.load("lib/sprites/spike.png")
+        }
+
+    def update(self, frame_num):
+        self.screen.fill((40, 40, 40))
+        self.frame_num = frame_num
 
         if GameState.SCREEN_CODE == ScreenCodes.MA:
             self.__draw_main_screen()
@@ -43,10 +52,9 @@ class Display:
 
     def __draw_battle_screen(self):
         self.screen.blit(self.images["background_bs"], (0, self.BATTLEBOX_VERTICAL_BORDER))
+        self.screen.blit(self.sprites["battery"], (GameState.BATTERY.position_x, GameState.BATTERY.position_y))
 
-        # Temp
-        pygame.draw.rect(self.screen, (0, 255, 255), [0, 0, self.WIDTH, self.BATTLEBOX_VERTICAL_BORDER])
-        # pygame.draw.rect(self.screen, (255, 255, 0), [0, self.BATTLEBOX_VERTICAL_BORDER, self.WIDTH, self.HEIGHT - self.BATTLEBOX_VERTICAL_BORDER])
+        pygame.draw.rect(self.screen, (40, 40, 40), [0, 0, self.WIDTH, self.BATTLEBOX_VERTICAL_BORDER])
 
         pygame.draw.rect(self.screen, (0, 255, 0),
                          [GameState.PLAYER.position_x, GameState.PLAYER.position_y, GameState.PLAYER.SIZE , GameState.PLAYER.SIZE])
@@ -54,17 +62,13 @@ class Display:
         pygame.draw.rect(self.screen, GameState.ENEMY.color,
                          [GameState.ENEMY.position_x, GameState.ENEMY.position_y, GameState.ENEMY.SIZE, GameState.ENEMY.SIZE])
 
+        sprite = self.sprites["spike"]
         for projectile in GameState.ENEMY.projectiles:
-            pygame.draw.rect(self.screen, (255, 255, 255), [projectile.position_x, projectile.position_y, projectile.SIZE, projectile.SIZE])
+            self.screen.blit(sprite, (projectile.position_x, projectile.position_y))
 
+        sprite = self.sprites["pulse"]
         for projectile in GameState.PLAYER.projectiles:
-            pygame.draw.rect(self.screen, (255, 255, 255), [projectile.position_x, projectile.position_y, projectile.SIZE, projectile.SIZE])
-
-        pygame.draw.rect(self.screen, (0, 0, 255),
-                         [GameState.BATTERY.position_x, GameState.BATTERY.position_y, GameState.BATTERY.SIZE, GameState.BATTERY.SIZE])
-
-        battery_text = self.font.render(f"{GameState.BATTERY.value}", True, (255, 255, 255))
-        self.screen.blit(battery_text, (GameState.BATTERY.position_x + 10, GameState.BATTERY.position_y + 15))
+            self.screen.blit(sprite, (projectile.position_x, projectile.position_y))
 
         lives_text = self.font.render(f"{GameState.PLAYER.LIVES}", True, (255, 255, 255))
         self.screen.blit(lives_text, (GameState.PLAYER.position_x + 10, GameState.PLAYER.position_y + 15))

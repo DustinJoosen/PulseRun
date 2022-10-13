@@ -5,9 +5,8 @@ from GameState import GameState
 
 class Projectile:
     SIZE = 10
-    SPEED = 80
 
-    def __init__(self, source, pos_x=0, pos_y=0):
+    def __init__(self, source, pos_x=0, pos_y=0, speed=110):
         self.position_x = pos_x
         self.position_y = pos_y
 
@@ -15,11 +14,12 @@ class Projectile:
         self.direction_y = 0
 
         self.source = source
+        self.speed = speed
 
     def update_position(self):
         # Move
-        self.position_x += (self.direction_x / 100) * self.SPEED
-        self.position_y += (self.direction_y / 100) * self.SPEED
+        self.position_x += (self.direction_x / 100) * self.speed
+        self.position_y += (self.direction_y / 100) * self.speed
 
     def out_of_bounds(self):
         size = self.SIZE
