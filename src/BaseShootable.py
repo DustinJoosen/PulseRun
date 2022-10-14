@@ -38,5 +38,5 @@ class BaseShootable:
                         GameState.SCREEN_CODE = ScreenCodes.SH
 
                 elif projectile.source == ProjectileOrigin.Player:
-                    print("Hit the enemy!")
+                    GameState.ENEMY.is_stunned = True
                     GameState.ENEMY.damage_ticks = 0

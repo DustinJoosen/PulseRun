@@ -24,8 +24,23 @@ class Enemy(BaseShootable):
         self.thread = SetInterval(self.shoot_projectile, self.PROJECTILE_INTERVAL)
 
         self.damage_ticks = 0
+        self.is_stunned = False
 
     def update_position(self):
+        # If stunned, don't update anything
+        if self.is_stunned:
+            self.color = (255, 100, 100)
+
+            if self.damage_ticks < 86:
+                self.damage_ticks += 1
+            else:
+                self.is_stunned = False
+                self.damage_ticks = 0
+                self.color = (50, 50, 255)
+
+            print("Skipping movement")
+            return
+
         # Move
         self.position_x += (self.direction_x / 100) * self.SPEED
         self.position_y += (self.direction_y / 100) * self.SPEED
@@ -43,14 +58,10 @@ class Enemy(BaseShootable):
         elif self.position_y >= Display.HEIGHT - self.SIZE:
             self.direction_y = -1
 
-        # Set color back
-        if self.damage_ticks < 36:
-            self.color = (255, 0, 0)
-            self.damage_ticks += 1
-        else:
-            self.color = (50, 50, 50)
-
     def shoot_projectile(self):
+        if self.is_stunned:
+            return
+
         mid_x, mid_y = self.get_mid_pos()
         projectile = Projectile(ProjectileOrigin.Enemy, mid_x, mid_y)
 
