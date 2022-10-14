@@ -7,12 +7,14 @@ from Enums import ProjectileOrigin
 
 class Player(BaseShootable):
     ORIGIN_TYPE = ProjectileOrigin.Player
-    LIVES = 100
+    LIVES = 10
 
     def __init__(self):
         super().__init__(0, Display.BATTLEBOX_VERTICAL_BORDER)
 
-        self.batteries = 1
+        # With how many batteries do you start? later this becomes part of GameState.
+        self.batteries = 4
+        self.score = 0
 
         GameState.PLAYER = self
 

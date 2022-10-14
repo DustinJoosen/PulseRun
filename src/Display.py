@@ -56,15 +56,24 @@ class Display:
 
         pygame.draw.rect(self.screen, (40, 40, 40), [0, 0, self.WIDTH, self.BATTLEBOX_VERTICAL_BORDER])
 
-        points_text = self.font.render(f"{int(GameState.PLAYER.batteries)} batteries", True, (255, 255, 255))
-        self.screen.blit(points_text, (300, 25))
+        # Score bar open
 
+        score_text = self.font.render(f"Score: {GameState.PLAYER.score}", True, (255, 255, 255))
+        self.screen.blit(score_text, (100, 25))
+
+        batteries_text = self.font.render(f"{int(GameState.PLAYER.batteries)} batteries", True, (255, 255, 255))
+        self.screen.blit(batteries_text, (300, 25))
+
+        # Score bar close
+
+        # Enemy open---
         enemy = GameState.ENEMY
         pygame.draw.rect(self.screen, enemy.color,
                          [enemy.position_x, enemy.position_y, enemy.SIZE, GameState.ENEMY.SIZE])
 
         pygame.draw.rect(self.screen, (255, 255, 255),
                          [enemy.position_x + 4, enemy.position_y + 4, enemy.SIZE - 8, GameState.ENEMY.SIZE - 8])
+        # Enemy close---
 
         pygame.draw.rect(self.screen, (0, 255, 0),
                          [GameState.PLAYER.position_x, GameState.PLAYER.position_y, GameState.PLAYER.SIZE , GameState.PLAYER.SIZE])

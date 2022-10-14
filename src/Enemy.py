@@ -38,7 +38,6 @@ class Enemy(BaseShootable):
                 self.damage_ticks = 0
                 self.color = (50, 50, 255)
 
-            print("Skipping movement")
             return
 
         # Move

@@ -38,6 +38,8 @@ while GameState.RUNNING:
                 GameState.PLAYER.batteries -= 4
 
     if GameState.SCREEN_CODE == ScreenCodes.BA:
+        GameState.PLAYER.score += 10
+
         frame_num += 1
         if frame_num > 22:
             frame_num = 0
@@ -63,4 +65,5 @@ while GameState.RUNNING:
     display.update(frame_num)
 
 GameState.ENEMY.thread.cancel()
-print(GameState.BATTERY.value)
+
+print(f"Batteries: {int(GameState.PLAYER.batteries)}\nScore: {GameState.PLAYER.score}")
