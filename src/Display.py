@@ -18,7 +18,9 @@ class Display:
         self.frame_num = 0
 
         self.images = {
-            "background_bs": pygame.image.load("lib/images/background_bs.png")
+            "background_bs": pygame.image.load("lib/images/background_bs.png"),
+            "hearth": pygame.image.load("lib/images/hearth.png"),
+            "battery_icon": pygame.image.load("lib/images/battery-icon.png")
         }
 
         self.sprites = {
@@ -43,12 +45,14 @@ class Display:
         pygame.display.update()
 
     def __draw_main_screen(self):
+        # temp
         text = self.font.render("Main screen", True, (255, 255, 255))
         self.screen.blit(text, (0, 0))
 
     def __draw_shop_screen(self):
-        text = self.font.render("Shop screen", True, (255, 255, 255))
-        self.screen.blit(text, (0, 0))
+        # temp
+        text = self.font.render("Game Over!", True, (255, 255, 255))
+        self.screen.blit(text, (200, 200))
 
     def __draw_battle_screen(self):
         self.screen.blit(self.images["background_bs"], (0, self.BATTLEBOX_VERTICAL_BORDER))
@@ -57,12 +61,20 @@ class Display:
         pygame.draw.rect(self.screen, (40, 40, 40), [0, 0, self.WIDTH, self.BATTLEBOX_VERTICAL_BORDER])
 
         # Score bar open
+        hearths = GameState.PLAYER.LIVES
+        if hearths >= 6:
+            hearths = 6
+
+        for i in range(hearths):
+            self.screen.blit(self.images["hearth"], (10 + (i * 25), 15))
 
         score_text = self.font.render(f"Score: {GameState.PLAYER.score}", True, (255, 255, 255))
-        self.screen.blit(score_text, (100, 25))
+        self.screen.blit(score_text, (175, 18))
+
+        self.screen.blit(self.images["battery_icon"], (300, 10))
 
         batteries_text = self.font.render(f"{int(GameState.PLAYER.batteries)} batteries", True, (255, 255, 255))
-        self.screen.blit(batteries_text, (300, 25))
+        self.screen.blit(batteries_text, (325, 18))
 
         # Score bar close
 
@@ -77,9 +89,6 @@ class Display:
 
         pygame.draw.rect(self.screen, (0, 255, 0),
                          [GameState.PLAYER.position_x, GameState.PLAYER.position_y, GameState.PLAYER.SIZE , GameState.PLAYER.SIZE])
-
-        lives_text = self.font.render(f"{GameState.PLAYER.LIVES}", True, (255, 255, 255))
-        self.screen.blit(lives_text, (GameState.PLAYER.position_x + 10, GameState.PLAYER.position_y + 15))
 
         sprite = self.sprites["spike"]
         for projectile in GameState.ENEMY.projectiles:

@@ -38,7 +38,7 @@ while GameState.RUNNING:
                 GameState.PLAYER.batteries -= 4
 
     if GameState.SCREEN_CODE == ScreenCodes.BA:
-        GameState.PLAYER.score += 10
+        GameState.PLAYER.score += 7
 
         frame_num += 1
         if frame_num > 22:
