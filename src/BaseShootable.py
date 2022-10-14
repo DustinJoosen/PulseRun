@@ -32,10 +32,7 @@ class BaseShootable:
                 self.projectiles.remove(projectile)
 
                 if projectile.source == ProjectileOrigin.Enemy:
-                    GameState.PLAYER.LIVES -= 1
-
-                    if GameState.PLAYER.LIVES <= 0:
-                        GameState.SCREEN_CODE = ScreenCodes.SH
+                    GameState.PLAYER.lives -= 1
 
                 elif projectile.source == ProjectileOrigin.Player:
                     GameState.ENEMY.is_stunned = True

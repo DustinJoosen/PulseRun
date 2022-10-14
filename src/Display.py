@@ -61,7 +61,7 @@ class Display:
         pygame.draw.rect(self.screen, (40, 40, 40), [0, 0, self.WIDTH, self.BATTLEBOX_VERTICAL_BORDER])
 
         # Score bar open
-        hearths = GameState.PLAYER.LIVES
+        hearths = GameState.PLAYER.lives
         if hearths >= 6:
             hearths = 6
 

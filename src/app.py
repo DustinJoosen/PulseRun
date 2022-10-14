@@ -8,7 +8,6 @@ from Battery import Battery
 from SetInterval import SetInterval
 
 pygame.init()
-GameState.init()
 
 screen = pygame.display.set_mode((Display.WIDTH, Display.HEIGHT))
 caption = pygame.display.set_caption("Pulse Run")
@@ -24,9 +23,12 @@ battery = Battery()
 
 frame_num = 0
 
+GameState.init()
+
 while GameState.RUNNING:
     clock.tick(64)
 
+    # If you press 'q' or the exit button, stop the game
     for event in pygame.event.get():
         if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_q):
             GameState.RUNNING = False
@@ -37,13 +39,16 @@ while GameState.RUNNING:
                 GameState.PLAYER.shoot_projectiles()
                 GameState.PLAYER.batteries -= 4
 
+    if GameState.SCREEN_CODE == ScreenCodes.MA:
+        pass
+
+    if GameState.SCREEN_CODE == ScreenCodes.SH:
+        pass
+
     if GameState.SCREEN_CODE == ScreenCodes.BA:
         GameState.PLAYER.score += 7
 
-        frame_num += 1
-        if frame_num > 22:
-            frame_num = 0
-
+        # Input handling
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
@@ -59,11 +64,20 @@ while GameState.RUNNING:
             GameState.PLAYER.batteries += GameState.BATTERY.value
             GameState.BATTERY.regenerate()
 
+        # If gameover, goto shop
+        if GameState.PLAYER.lives <= 0:
+            GameState.SCREEN_CODE = ScreenCodes.SH
+            GameState.set_save_file()
+            continue
+
         GameState.ENEMY.update_position()
         GameState.PLAYER.update_projectiles()
+
+        frame_num += 1
+        if frame_num > 22:
+            frame_num = 0
 
     display.update(frame_num)
 
 GameState.ENEMY.thread.cancel()
-
 print(f"Batteries: {int(GameState.PLAYER.batteries)}\nScore: {GameState.PLAYER.score}")
