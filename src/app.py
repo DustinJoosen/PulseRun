@@ -23,6 +23,8 @@ battery = Battery()
 
 frame_num = 0
 
+pause = False
+
 GameState.init()
 
 while GameState.RUNNING:
@@ -35,9 +37,11 @@ while GameState.RUNNING:
             continue
 
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE and GameState.PLAYER.batteries >= 4:
+            if not pause and event.key == pygame.K_SPACE and GameState.PLAYER.batteries >= 4:
                 GameState.PLAYER.shoot_projectiles()
                 GameState.PLAYER.batteries -= 4
+            elif event.key == pygame.K_p:
+                pause = not pause
 
     if GameState.SCREEN_CODE == ScreenCodes.MA:
         pass
@@ -46,6 +50,9 @@ while GameState.RUNNING:
         pass
 
     if GameState.SCREEN_CODE == ScreenCodes.BA:
+        if pause:
+            continue
+
         GameState.PLAYER.score += 7
 
         # Input handling
@@ -72,6 +79,10 @@ while GameState.RUNNING:
 
         GameState.ENEMY.update_position()
         GameState.PLAYER.update_projectiles()
+
+        button = display.buttons["bs"]["pause"]
+        if button.is_hovering():
+            print("hovering pause")
 
         frame_num += 1
         if frame_num > 22:

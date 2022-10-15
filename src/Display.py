@@ -1,5 +1,6 @@
 from GameState import GameState
 from Enums import ScreenCodes
+from Button import Button
 import pygame
 
 pygame.init()
@@ -27,6 +28,12 @@ class Display:
             "battery": pygame.image.load("lib/sprites/battery.png"),
             "pulse": pygame.image.load("lib/sprites/pulse.png"),
             "spike": pygame.image.load("lib/sprites/spike.png")
+        }
+
+        self.buttons = {
+            "bs": {
+                "pause": Button(20, 20, position=[430, 15])
+            }
         }
 
     def update(self, frame_num):
@@ -76,6 +83,7 @@ class Display:
         batteries_text = self.font.render(f"{int(GameState.PLAYER.batteries)} batteries", True, (255, 255, 255))
         self.screen.blit(batteries_text, (325, 18))
 
+        self.buttons["bs"]["pause"].draw(self.screen)
         # Score bar close
 
         # Enemy open---
