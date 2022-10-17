@@ -74,6 +74,10 @@ while GameState.RUNNING:
         # If gameover, goto shop
         if GameState.PLAYER.lives <= 0:
             GameState.SCREEN_CODE = ScreenCodes.SH
+            if (new_highscore := GameState.PLAYER.score) > GameState.TOP_SCORE:
+                GameState.TOP_SCORE = new_highscore
+                print("New Top score!!! " + str(new_highscore))
+
             GameState.set_save_file()
             continue
 

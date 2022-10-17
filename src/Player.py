@@ -17,9 +17,12 @@ class Player(BaseShootable):
         self.pulse_speed = 250
         self.lives = self.STARTING_LIVES
 
+        self.direction = "right"
+
         GameState.PLAYER = self
 
     def update_position(self, direction):
+        self.direction = direction
         movement = (GameState.PLAYER.SIZE / 100) * GameState.PLAYER_SPEED
 
         if direction == "left" and self.position_x > 0:

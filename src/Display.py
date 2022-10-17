@@ -28,7 +28,7 @@ class Display:
             "battery": pygame.image.load("lib/sprites/battery.png"),
             "pulse": pygame.image.load("lib/sprites/pulse.png"),
             "spike": pygame.image.load("lib/sprites/spike.png"),
-            "orig_enemy": pygame.image.load("lib/sprites/enemy.png"),
+            "player": pygame.image.load("lib/sprites/player.png"),
             "enemy": {
                 "original": pygame.image.load("lib/sprites/enemy.png"),
                 "active": pygame.image.load("lib/sprites/enemy.png"),
@@ -112,8 +112,23 @@ class Display:
 
         # Enemy close---
 
-        pygame.draw.rect(self.screen, (0, 255, 0),
-                         [GameState.PLAYER.position_x, GameState.PLAYER.position_y, GameState.PLAYER.SIZE , GameState.PLAYER.SIZE])
+        # Player open---
+
+        sprite = self.sprites["player"]
+        player = GameState.PLAYER
+
+        rotation = 0
+        if player.direction == "left":
+            rotation = 90
+        elif player.direction == "right":
+            rotation = 270
+        elif player.direction == "down":
+            rotation = 180
+
+        sprite = pygame.transform.rotate(sprite, rotation)
+        self.screen.blit(sprite, (player.position_x, player.position_y))
+
+        # Player close---
 
         sprite = self.sprites["spike"]
         for projectile in GameState.ENEMY.projectiles:
