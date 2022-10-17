@@ -27,14 +27,23 @@ class Display:
         self.sprites = {
             "battery": pygame.image.load("lib/sprites/battery.png"),
             "pulse": pygame.image.load("lib/sprites/pulse.png"),
-            "spike": pygame.image.load("lib/sprites/spike.png")
+            "spike": pygame.image.load("lib/sprites/spike.png"),
+            "orig_enemy": pygame.image.load("lib/sprites/enemy.png"),
+            "enemy": {
+                "original": pygame.image.load("lib/sprites/enemy.png"),
+                "active": pygame.image.load("lib/sprites/enemy.png"),
+                "rect": None
+            }
         }
 
         self.buttons = {
             "bs": {
-                "pause": Button(20, 20, position=[430, 15])
+                "pause": Button(20, 20, position=[445, 15]),
+                "stop": Button(20, 20, position=[470, 15])
             }
         }
+
+        self.sprites["enemy"]["rect"] = self.sprites["enemy"]["active"].get_rect()
 
     def update(self, frame_num):
         self.screen.fill((40, 40, 40))
@@ -84,15 +93,23 @@ class Display:
         self.screen.blit(batteries_text, (325, 18))
 
         self.buttons["bs"]["pause"].draw(self.screen)
+        self.buttons["bs"]["stop"].draw(self.screen)
         # Score bar close
 
         # Enemy open---
-        enemy = GameState.ENEMY
-        pygame.draw.rect(self.screen, enemy.color,
-                         [enemy.position_x, enemy.position_y, enemy.SIZE, GameState.ENEMY.SIZE])
 
-        pygame.draw.rect(self.screen, (255, 255, 255),
-                         [enemy.position_x + 4, enemy.position_y + 4, enemy.SIZE - 8, GameState.ENEMY.SIZE - 8])
+        enemy = GameState.ENEMY
+        rotation = self.frame_num - int(self.frame_num / 360) * 360
+
+        self.sprites["enemy"]["active"] = pygame.transform.rotate(self.sprites["enemy"]["original"], rotation)
+        x, y = (enemy.position_x + enemy.SIZE / 2, enemy.position_y + enemy.SIZE / 2)
+        self.sprites["enemy"]["rect"] = self.sprites["enemy"]["active"].get_rect()
+        self.sprites["enemy"]["rect"].center = (x, y)
+
+        self.sprites["enemy"]["active"].fill(enemy.color, special_flags=pygame.BLEND_ADD)
+
+        self.screen.blit(self.sprites["enemy"]["active"], self.sprites["enemy"]["rect"])
+
         # Enemy close---
 
         pygame.draw.rect(self.screen, (0, 255, 0),

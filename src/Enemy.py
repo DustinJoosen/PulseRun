@@ -17,7 +17,7 @@ class Enemy(BaseShootable):
         self.direction_x = 0
         self.direction_y = 0
 
-        self.color = (50, 50, 255)
+        self.color = (0, 0, 0)
 
         GameState.ENEMY = self
 
@@ -29,14 +29,14 @@ class Enemy(BaseShootable):
     def update_position(self):
         # If stunned, don't update anything
         if self.is_stunned:
-            self.color = (255, 100, 100)
+            self.color = (50, 0, 0)
 
             if self.damage_ticks < 86:
                 self.damage_ticks += 1
             else:
                 self.is_stunned = False
                 self.damage_ticks = 0
-                self.color = (50, 50, 255)
+                self.color = (0, 0, 0)
 
             return
 

@@ -85,8 +85,6 @@ while GameState.RUNNING:
             print("hovering pause")
 
         frame_num += 1
-        if frame_num > 22:
-            frame_num = 0
 
     display.update(frame_num)
 
