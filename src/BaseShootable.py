@@ -35,5 +35,9 @@ class BaseShootable:
                     GameState.PLAYER.lives -= 1
 
                 elif projectile.source == ProjectileOrigin.Player:
+                    if GameState.ENEMY.is_stunned:
+                        return
+
                     GameState.ENEMY.is_stunned = True
                     GameState.ENEMY.damage_ticks = 0
+                    GameState.PLAYER.score += 5000
