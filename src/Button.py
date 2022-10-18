@@ -37,7 +37,7 @@ class Button:
                 clicking = True
                 print("Clicking")
 
-        if clicking and self.onclick is not None:
+        if clicking or self.onclick is not None:
             self.onclick()
 
         return clicking

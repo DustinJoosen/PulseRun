@@ -1,0 +1,9 @@
+{
+    "player_name": "admin",
+    "player_speed": 15,
+    "player_lives": 10000,
+    "player_pulse_speed": 250,
+    "created_at": "18/10/2022",
+    "batteries": 9999,
+    "top_score": 90708
+}

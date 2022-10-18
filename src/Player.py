@@ -13,7 +13,7 @@ class Player(BaseShootable):
         super().__init__(0, Display.BATTLEBOX_VERTICAL_BORDER)
 
         self.score = 0
-        self.batteries = []
+        self.batteries = 0
         self.pulse_speed = 250
         self.lives = self.STARTING_LIVES
 

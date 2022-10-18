@@ -6,6 +6,7 @@ from Player import Player
 from Enemy import Enemy
 from Battery import Battery
 from SetInterval import SetInterval
+from time import sleep
 
 pygame.init()
 
@@ -16,16 +17,25 @@ clock = pygame.time.Clock()
 
 display = Display(screen)
 
-player = Player()
-enemy = Enemy()
+frame_num = None
+pause = None
 
-battery = Battery()
 
-frame_num = 0
+# This is initialized in a function, so that it can easily be reset.
+def initialize_battle():
+    global frame_num
+    global pause
 
-pause = False
+    frame_num = 0
+    pause = False
 
-GameState.init()
+    Player()
+    Enemy()
+    Battery()
+
+
+# Allow the GameState to reset the battle
+GameState.INIT_BATTLE = initialize_battle
 
 while GameState.RUNNING:
     clock.tick(64)
@@ -50,6 +60,7 @@ while GameState.RUNNING:
         pass
 
     if GameState.SCREEN_CODE == ScreenCodes.BA:
+        print(GameState.PLAYER.lives)
         if pause:
             continue
 
@@ -79,6 +90,13 @@ while GameState.RUNNING:
                 print("New Top score!!! " + str(new_highscore))
 
             GameState.set_save_file()
+
+            GameState.ENEMY.thread.cancel()
+            print(f"Batteries: {int(GameState.PLAYER.batteries)}\nScore: {GameState.PLAYER.score}")
+
+            sleep(5)
+            GameState.SCREEN_CODE = ScreenCodes.BA
+            GameState.select_player()
             continue
 
         GameState.ENEMY.update_position()
@@ -93,4 +111,3 @@ while GameState.RUNNING:
     display.update(frame_num)
 
 GameState.ENEMY.thread.cancel()
-print(f"Batteries: {int(GameState.PLAYER.batteries)}\nScore: {GameState.PLAYER.score}")

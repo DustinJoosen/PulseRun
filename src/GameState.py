@@ -1,10 +1,12 @@
 from Enums import ScreenCodes
 import json
+import tkinter as tk
+from tkinter import filedialog
 
 
 class GameState:
 
-    SCREEN_CODE = ScreenCodes.BA
+    SCREEN_CODE = ScreenCodes.MA
     RUNNING = True
 
     PLAYER = None
@@ -19,9 +21,26 @@ class GameState:
     SAVE_CREATED_AT = None
     TOP_SCORE = None
 
+    INIT_BATTLE = lambda: print("method not declared yet")
+
     @classmethod
-    def init(cls):
-        info = cls.get_save_file_info()
+    def exit(cls):
+        cls.RUNNING = False
+
+    @classmethod
+    def select_player(cls):
+        if cls.PLAYER_NAME is None:
+            root = tk.Tk()
+            root.withdraw()
+
+            filename = filedialog.askopenfilename()
+            info = cls.get_save_file_info(filename)
+
+            cls.PLAYER_NAME = info["player_name"]
+        else:
+            info = cls.get_save_file_info(f"saves/{cls.PLAYER_NAME}.json")
+
+        cls.INIT_BATTLE()
 
         cls.PLAYER.STARTING_LIVES = info["player_lives"]
         cls.PLAYER.lives = info["player_lives"]
@@ -29,12 +48,18 @@ class GameState:
         cls.PLAYER.pulse_speed = info["player_pulse_speed"]
 
         cls.PLAYER_SPEED = info["player_speed"]
-        cls.PLAYER_NAME = info["player_name"]
         cls.SAVE_CREATED_AT = info["created_at"]
         cls.TOP_SCORE = info["top_score"]
 
-        print("Gamestate initialized")
-        print(f"Welcome {cls.PLAYER_NAME}!")
+        print("Welcome " + cls.PLAYER_NAME)
+        cls.SCREEN_CODE = ScreenCodes.BA
+
+    @classmethod
+    def create_player(cls):
+        print("Creating user")
+
+        user = None
+        cls.select_player()
 
     @classmethod
     def set_save_file(cls):
@@ -48,28 +73,24 @@ class GameState:
             "top_score": cls.TOP_SCORE
         }
 
-        with open("saves/syter6.json", 'w') as handle:
+        with open(f"saves/{cls.PLAYER_NAME}.json", 'w') as handle:
             save = json.dumps(save_file, indent=4)
             handle.write(save)
 
     @classmethod
-    def get_save_file_info(cls):
-        with open("saves/syter6.json", 'r') as handle:
+    def get_save_file_info(cls, filename):
+        with open(filename, 'r') as handle:
             content = handle.read()
 
         return json.loads(content)
 
-    @classmethod
-    def create_save_file(cls):
-        pass
-
-    @classmethod
-    def print_save_information(cls):
-        info = cls.get_save_file_info()
-        print(f"Player name: {info['player_name']}")
-        print(f"Player speed: {info['player_speed']}")
-        print(f"Player lives: {info['player_lives']}")
-        print(f"Player pulse speed: {info['player_pulse_speed']}")
-        print(f"Created at: {info['created_at']}")
-        print(f"Batteries: {info['batteries']}")
-        print(f"Topscore: {info['top_score']}")
+    # @classmethod
+    # def print_save_information(cls):
+    #     info = cls.get_save_file_info()
+    #     print(f"Player name: {info['player_name']}")
+    #     print(f"Player speed: {info['player_speed']}")
+    #     print(f"Player lives: {info['player_lives']}")
+    #     print(f"Player pulse speed: {info['player_pulse_speed']}")
+    #     print(f"Created at: {info['created_at']}")
+    #     print(f"Batteries: {info['batteries']}")
+    #     print(f"Topscore: {info['top_score']}")

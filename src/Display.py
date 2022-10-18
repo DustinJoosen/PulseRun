@@ -14,14 +14,19 @@ class Display:
 
     def __init__(self, screen):
         self.screen = screen
-        self.font = pygame.font.Font("freesansbold.ttf", 15)
+
+        self.font = pygame.font.Font("lib/font/FreeSansBold.ttf", 15)
+        self.font_arka = pygame.font.Font("lib/font/ARKANOID.TTF", 35)
 
         self.frame_num = 0
 
         self.images = {
             "background_bs": pygame.image.load("lib/images/background_bs.png"),
             "hearth": pygame.image.load("lib/images/hearth.png"),
-            "battery_icon": pygame.image.load("lib/images/battery-icon.png")
+            "battery_icon": pygame.image.load("lib/images/battery-icon.png"),
+            "button_template": pygame.image.load("lib/images/ms_button_template.png"),
+            "exit_button": pygame.image.load("lib/images/exit_icon.png"),
+            "logo": pygame.image.load("lib/images/logo.png")
         }
 
         self.sprites = {
@@ -37,6 +42,13 @@ class Display:
         }
 
         self.buttons = {
+            "ms": {
+                "continue": Button(300, 60, position=[100, 250], image=self.images["button_template"],
+                                   onclick=GameState.select_player),
+                "new_game": Button(300, 60, position=[100, 350], image=self.images["button_template"],
+                                   onclick=GameState.create_player),
+                "exit": Button(40, 40, position=[440, 540], image=self.images["exit_button"], onclick=GameState.exit)
+            },
             "bs": {
                 "pause": Button(20, 20, position=[445, 15]),
                 "stop": Button(20, 20, position=[470, 15])
@@ -61,9 +73,21 @@ class Display:
         pygame.display.update()
 
     def __draw_main_screen(self):
-        # temp
-        text = self.font.render("Main screen", True, (255, 255, 255))
-        self.screen.blit(text, (0, 0))
+        self.screen.blit(self.images["logo"], (40, 100))
+
+        # Draw all buttons
+        for button in self.buttons["ms"]:
+            self.buttons["ms"][button].draw(self.screen)
+            self.buttons["ms"][button].check_onclick()
+
+        text_continue = self.font_arka.render("Continue", True, (255, 255, 255))
+        text_new_game = self.font_arka.render("New Game", True, (255, 255, 255))
+
+        button_continue = self.buttons["ms"]["continue"]
+        button_new_game = self.buttons["ms"]["new_game"]
+
+        self.screen.blit(text_continue, (button_continue.position[0] + 55, button_continue.position[1] + 15))
+        self.screen.blit(text_new_game, (button_new_game.position[0] + 55, button_new_game.position[1] + 15))
 
     def __draw_shop_screen(self):
         # temp
