@@ -31,7 +31,7 @@ class Enemy(BaseShootable):
         if self.is_stunned:
             self.color = (50, 0, 0)
 
-            if self.damage_ticks < 86:
+            if self.damage_ticks < 432:
                 self.damage_ticks += 1
             else:
                 self.is_stunned = False
