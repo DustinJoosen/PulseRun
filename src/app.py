@@ -60,7 +60,6 @@ while GameState.RUNNING:
         pass
 
     if GameState.SCREEN_CODE == ScreenCodes.BA:
-        print(GameState.PLAYER.lives)
         if pause:
             continue
 
@@ -84,7 +83,7 @@ while GameState.RUNNING:
 
         # If gameover, goto shop
         if GameState.PLAYER.lives <= 0:
-            GameState.SCREEN_CODE = ScreenCodes.SH
+            #GameState.set_screen(ScreenCodes.SH)
             if (new_highscore := GameState.PLAYER.score) > GameState.TOP_SCORE:
                 GameState.TOP_SCORE = new_highscore
                 print("New Top score!!! " + str(new_highscore))
@@ -110,4 +109,6 @@ while GameState.RUNNING:
 
     display.update(frame_num)
 
-GameState.ENEMY.thread.cancel()
+# The enemy thread continues going after screen-death, so if there is an active thread, cancel it.
+if GameState.ENEMY:
+    GameState.ENEMY.thread.cancel()
