@@ -5,8 +5,10 @@ from Enums import ScreenCodes
 from Player import Player
 from Enemy import Enemy
 from Battery import Battery
+from Button import Button
 from SetInterval import SetInterval
 from time import sleep
+import win32gui
 
 pygame.init()
 
@@ -20,19 +22,39 @@ display = Display(screen)
 frame_num = None
 pause = None
 
+windows = []
+
 
 # This is initialized in a function, so that it can easily be reset.
 def initialize_battle():
     global frame_num
     global pause
 
-    frame_num = 0
+    frame_num = 1
     pause = False
 
-    Player()
-    Enemy()
-    Battery()
+    # Bring the window to the front
+    for window in display.windows:
+        if window[1] == "Pulse Run":
+            win32gui.ShowWindow(window[0], 5)
+            win32gui.SetForegroundWindow(window[0])
 
+    Player()
+    Battery()
+    Enemy()
+
+    display.frame_num = frame_num
+
+    for i in range(3, 0, -1):
+        display.draw_battle_screen()
+        display.draw_number(i)
+
+        sleep(1)
+
+    GameState.ENEMY.start_thread()
+
+
+win32gui.EnumWindows(display.window_enumeration_handler, display.windows)
 
 # Allow the GameState to reset the battle
 GameState.INIT_BATTLE = initialize_battle
@@ -52,6 +74,13 @@ while GameState.RUNNING:
                 GameState.PLAYER.batteries -= 4
             elif event.key == pygame.K_p:
                 pause = not pause
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            Button.MOUSE_DOWN = True
+            print("button mouse down set to true")
+        else:
+            Button.MOUSE_DOWN = False
+            print("button mouse down is set to false")
 
     if GameState.SCREEN_CODE == ScreenCodes.MA:
         pass
@@ -83,7 +112,7 @@ while GameState.RUNNING:
 
         # If gameover, goto shop
         if GameState.PLAYER.lives <= 0:
-            #GameState.set_screen(ScreenCodes.SH)
+            # GameState.set_screen(ScreenCodes.SH)
             if (new_highscore := GameState.PLAYER.score) > GameState.TOP_SCORE:
                 GameState.TOP_SCORE = new_highscore
                 print("New Top score!!! " + str(new_highscore))
@@ -93,7 +122,6 @@ while GameState.RUNNING:
             GameState.ENEMY.thread.cancel()
             print(f"Batteries: {int(GameState.PLAYER.batteries)}\nScore: {GameState.PLAYER.score}")
 
-            sleep(5)
             GameState.SCREEN_CODE = ScreenCodes.BA
             GameState.select_player()
             continue
@@ -102,8 +130,9 @@ while GameState.RUNNING:
         GameState.PLAYER.update_projectiles()
 
         button = display.buttons["bs"]["pause"]
-        if button.is_hovering():
-            print("hovering pause")
+        if button.check_onclick():
+            pause = not pause
+            print("toggled pause button. now " + str(pause))
 
         frame_num += 1
 

@@ -2,6 +2,7 @@ from GameState import GameState
 from Enums import ScreenCodes
 from Button import Button
 import pygame
+import win32gui
 
 pygame.init()
 
@@ -17,8 +18,11 @@ class Display:
 
         self.font = pygame.font.Font("lib/font/FreeSansBold.ttf", 15)
         self.font_arka = pygame.font.Font("lib/font/ARKANOID.TTF", 35)
+        self.font_big = pygame.font.Font("lib/font/FreeSansBold.ttf", 125)
 
         self.frame_num = 0
+
+        self.windows = []
 
         self.images = {
             "background_bs": pygame.image.load("lib/images/background_bs.png"),
@@ -51,28 +55,31 @@ class Display:
             },
             "bs": {
                 "pause": Button(20, 20, position=[445, 15]),
-                "stop": Button(20, 20, position=[470, 15])
+                "stop": Button(20, 20, position=[470, 15], onclick=lambda: GameState.set_screen(ScreenCodes.MA))
             }
         }
 
         self.sprites["enemy"]["rect"] = self.sprites["enemy"]["active"].get_rect()
+
+    def window_enumeration_handler(self, hwnd, windows):
+        self.windows.append((hwnd, win32gui.GetWindowText(hwnd)))
 
     def update(self, frame_num):
         self.screen.fill((40, 40, 40))
         self.frame_num = frame_num
 
         if GameState.SCREEN_CODE == ScreenCodes.MA:
-            self.__draw_main_screen()
+            self.draw_main_screen()
         elif GameState.SCREEN_CODE == ScreenCodes.SH:
-            self.__draw_shop_screen()
+            self.draw_shop_screen()
         elif GameState.SCREEN_CODE == ScreenCodes.BA:
-            self.__draw_battle_screen()
+            self.draw_battle_screen()
         else:
             print(f"Can't draw with screencode {GameState.SCREEN_CODE}")
 
         pygame.display.update()
 
-    def __draw_main_screen(self):
+    def draw_main_screen(self):
         self.screen.blit(self.images["logo"], (40, 100))
 
         # Draw all buttons
@@ -89,12 +96,12 @@ class Display:
         self.screen.blit(text_continue, (button_continue.position[0] + 55, button_continue.position[1] + 15))
         self.screen.blit(text_new_game, (button_new_game.position[0] + 55, button_new_game.position[1] + 15))
 
-    def __draw_shop_screen(self):
+    def draw_shop_screen(self):
         # temp
         text = self.font.render("Game Over!", True, (255, 255, 255))
         self.screen.blit(text, (200, 200))
 
-    def __draw_battle_screen(self):
+    def draw_battle_screen(self):
         self.screen.blit(self.images["background_bs"], (0, self.BATTLEBOX_VERTICAL_BORDER))
         self.screen.blit(self.sprites["battery"], (GameState.BATTERY.position_x, GameState.BATTERY.position_y))
 
@@ -161,3 +168,8 @@ class Display:
         sprite = self.sprites["pulse"]
         for projectile in GameState.PLAYER.projectiles:
             self.screen.blit(sprite, (projectile.position_x, projectile.position_y))
+
+    def draw_number(self, number):
+        text = self.font_big.render(f"{int(number)}", True, (255, 160, 75))
+        self.screen.blit(text, (240, 200))
+        pygame.display.update()

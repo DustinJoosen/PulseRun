@@ -1,7 +1,9 @@
 import pygame
-from GameState import GameState
+
 
 class Button:
+    MOUSE_DOWN = False
+
     def __init__(self, width, height, onclick=None, position=(0, 0), color=(255, 255, 255), text="", image=None):
         self.width = width
         self.height = height
@@ -31,13 +33,8 @@ class Button:
         if not hovering:
             return False
 
-        clicking = False
-        for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                clicking = True
-                print("Clicking")
-
-        if clicking or self.onclick is not None:
+        clicking = self.MOUSE_DOWN and hovering
+        if clicking and self.onclick is not None:
             self.onclick()
 
         return clicking

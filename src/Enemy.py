@@ -21,10 +21,13 @@ class Enemy(BaseShootable):
 
         GameState.ENEMY = self
 
-        self.thread = SetInterval(self.shoot_projectile, self.PROJECTILE_INTERVAL)
+        self.thread = None
 
         self.damage_ticks = 0
         self.is_stunned = False
+
+    def start_thread(self):
+        self.thread = SetInterval(self.shoot_projectile, self.PROJECTILE_INTERVAL)
 
     def update_position(self):
         # If stunned, don't update anything
